@@ -1,38 +1,72 @@
-function bookPurchasing({title, price, category, author, status, stock}, discount, tax, amountPurchased) {
-    let jumlah = 0;
-    for (let i=1; i<=amountPurchased; i++){
-        if(amountPurchased <= stock){
-            const amountOfDiscount = price * (discount / 100);
-            const priceAfterDiscount = price - amountOfDiscount;
-            const amountOfTax = priceAfterDiscount * (tax / 100);
-            const priceAfterTax = priceAfterDiscount + amountOfTax;
-            console.log("Buku ke-" + i);
-            console.log("- Title : " + title);
-            console.log("- Price : " + price);
-            console.log("- Category : " + category);
-            console.log("- Author : " + author);
-            console.log("- Price : " + price);
-            console.log("- Amount of discount : " + amountOfDiscount);
-            console.log("- Price after discount : " + priceAfterDiscount);
-            console.log("- Amount of tax : " + amountOfTax);
-            console.log("- Price after tax and discount : " + priceAfterTax);
-            jumlah = jumlah + priceAfterTax;
-        }
-        else{
-            console.log("Maaf, stok buku tidak memenuhi");
-        }
-    }
-    console.log(" ");
-    console.log("==> Total harga semua buku : " + jumlah);
-}
-        
-let book = {
-    "title": "Tulisan Sastra",
+let book = [
+    {"title": "Tulisan Sastra",
     "price": 100000,
     "category" : "Novel",
     "author" : "Tenderlova",
-    "status" : true,
-    "stock" : 10
-}
+    "stock" : 10},
+    {"title" : "Dikta dan Hukum",
+    "price" : 150000,
+    "category" : "Novel",
+    "author" : "Rosy",
+    "stock" : 25}
+]
 
-bookPurchasing(book, 20, 5, 3);
+function bookPurchasing(book, discount, tax, amountPurchased) {
+    let jumlah = 0;
+    let totalHarga=0;
+    for (let i=0; i<book.length; i++){
+        if(amountPurchased <= book[i].stock){
+            const amountOfDiscount = book[i].price * (discount / 100);
+            const priceAfterDiscount = book[i].price - amountOfDiscount;
+            const amountOfTax = priceAfterDiscount * (tax / 100);
+            const priceAfterTax = priceAfterDiscount + amountOfTax;
+            jumlah = priceAfterTax * amountPurchased;
+            console.log("===================================================");
+            console.log(i+1 + ". BOOK ");
+            console.log("- Title : " + book[i].title);
+            console.log("- Category : " + book[i].category);
+            console.log("- Author : " + book[i].author);
+            console.log("- Price : Rp." + book[i].price);
+            console.log("- Amount of discount : Rp." + amountOfDiscount);
+            console.log("- Price after discount : Rp." + priceAfterDiscount);
+            console.log("- Amount of tax : Rp." + amountOfTax);
+            console.log("- Price after tax and discount : Rp." + priceAfterTax);
+            console.log("- Amount of purchased : " + amountPurchased);
+            console.log("");
+            console.log("===> Total Harga : Rp." + jumlah);
+            totalHarga = totalHarga + jumlah;
+        }
+        else{
+            console.log("==============================");
+            console.log("Maaf, stok buku tidak memenuhi");
+            console.log("==============================");
+        }
+    }
+    return totalHarga;
+}   
+
+function credit(totalHarga, durationCredit, taxCredit){
+    cicilan=[];
+    let jmlCredit = 0;
+    let bulananCredit = 0;
+    let amountTaxCredit = 0;
+    console.log("===================================================");
+    console.log("");
+    console.log("                    MENU CREDIT                    ");
+    console.log("");
+    console.log("Total Harga = Rp." + totalHarga);
+    console.log("Pajak = "+ taxCredit + "%");
+    amountTaxCredit = totalHarga * taxCredit * 0.01;
+    jmlCredit = totalHarga + amountTaxCredit;
+    console.log("Total Harga Kredit ==> Rp." + jmlCredit);
+    console.log("Kredit = " + durationCredit + " bulan");
+    console.log("");
+    bulananCredit = jmlCredit / durationCredit;
+    console.log("Cicilan Bulanan : ");
+    for (let j=1; j<=durationCredit; j++){
+        console.log("Bulan ke-" + j + " = " + bulananCredit);
+    }
+    console.log("");
+    console.log("===================================================");
+}
+credit(bookPurchasing(book, 20, 5, 3), 6, 10);
